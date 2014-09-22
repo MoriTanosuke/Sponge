@@ -46,12 +46,13 @@ public class SpongePluginContainer extends FMLModContainer implements PluginCont
     private final Map<String, Object> fmlDescriptor;
     private final String className;
     private final ModCandidate container;
+    @SuppressWarnings("unused")
     private final File source;
     private Object plugin;
 
     private LoadController controller;
     private boolean enabled = true;
-    
+
     public SpongePluginContainer(String className, ModCandidate container, Map<String, Object> modDescriptor) {
         // I suggest that you should be instantiating a proxy object, not the real plugin here.
         super("org.spongepowered.mod.plugin.SpongePluginContainer$ProxyMod", container, modDescriptor);
@@ -59,7 +60,7 @@ public class SpongePluginContainer extends FMLModContainer implements PluginCont
         this.className = className;
         this.container = container;
         this.source = container.getModContainer();
-        
+
         // Allow connections from clients without this plugin
         this.fmlDescriptor.put("acceptableRemoteVersions", "*");
     }
@@ -78,16 +79,17 @@ public class SpongePluginContainer extends FMLModContainer implements PluginCont
     public String getID() {
         return getModId();
     }
-    
+
     @Override
     public void setEnabledState(boolean enabled) {
         super.setEnabledState(enabled);
         this.enabled = enabled;
     }
-    
+
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
         if (enabled) {
+            // TODO what's happening here? should we at least log something
         }
         return super.registerBus(bus, controller);
     }
@@ -100,7 +102,7 @@ public class SpongePluginContainer extends FMLModContainer implements PluginCont
         try {
             ModClassLoader modClassLoader = event.getModClassLoader();
             modClassLoader.clearNegativeCacheFor(container.getClassList());
-            
+
             Class<?> clazz = Class.forName(className, true, modClassLoader);
 
             plugin = clazz.newInstance();
@@ -108,7 +110,7 @@ public class SpongePluginContainer extends FMLModContainer implements PluginCont
             controller.errorOccurred(this, e);
             Throwables.propagateIfPossible(e);
         }
-        
+
         SpongeMod.instance.registerPluginContainer(this, getID(), getInstance());
     }
 

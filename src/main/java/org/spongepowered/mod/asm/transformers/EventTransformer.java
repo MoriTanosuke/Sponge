@@ -54,7 +54,7 @@ import org.spongepowered.mod.asm.util.ASMHelper;
 
 public class EventTransformer implements IClassTransformer {
     
-    private final static Map<String, Class<?>> events = new HashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> events = new HashMap<String, Class<?>>();
     
     static {
         events.put("cpw.mods.fml.common.event.FMLPreInitializationEvent", PreInitializationEvent.class);
@@ -94,7 +94,7 @@ public class EventTransformer implements IClassTransformer {
             }
 
             // TODO: This is a temporary thing to make PreInit work. The different things needed to make different events work should be abstracted.
-            if(PreInitializationEvent.class.isAssignableFrom(interf)) {
+            if (PreInitializationEvent.class.isAssignableFrom(interf)) {
                 ASMHelper.generateSelfForwardingMethod(classNode, "getConfigurationDirectory", "getModConfigurationDirectory",
                                                        Type.getType(File.class));
                 ASMHelper.generateSelfForwardingMethod(classNode, "getPluginLog", "getModLog",
@@ -110,10 +110,12 @@ public class EventTransformer implements IClassTransformer {
         }
     }
     
-    static protected MethodNode createGetGameMethod() {
+    protected static MethodNode createGetGameMethod() {
         MethodNode methodNode = new MethodNode(Opcodes.ASM4, Opcodes.ACC_PUBLIC, "getGame", "()Lorg/spongepowered/api/Game;", null, null);
-        methodNode.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, "org/spongepowered/mod/SpongeMod", "instance", "Lorg/spongepowered/mod/SpongeMod;"));
-        methodNode.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "org/spongepowered/mod/SpongeMod", "getGame", "()Lorg/spongepowered/mod/SpongeGame;", false));
+        methodNode.instructions.add(new FieldInsnNode(Opcodes.GETSTATIC, "org/spongepowered/mod/SpongeMod", "instance",
+                "Lorg/spongepowered/mod/SpongeMod;"));
+        methodNode.instructions.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, "org/spongepowered/mod/SpongeMod", "getGame",
+                "()Lorg/spongepowered/mod/SpongeGame;", false));
         methodNode.instructions.add(new InsnNode(Opcodes.ARETURN));
         methodNode.maxLocals = 1;
         methodNode.maxStack = 1;
