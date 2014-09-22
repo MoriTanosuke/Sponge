@@ -85,8 +85,7 @@ public class ASMHelper {
      * @param rettype Return type of method
      */
     public static void generateSelfForwardingMethod(ClassNode clazz, String name, String forwardname, Type rettype) {
-        MethodNode method =
-                new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
+        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
 
         populateSelfForwardingMethod(method, forwardname, rettype, Type.getObjectType(clazz.name));
 
@@ -103,9 +102,8 @@ public class ASMHelper {
      * @param rettype Return type of method
      */
     public static void generateStaticForwardingMethod(ClassNode clazz, String name, String forwardname, Type rettype, Type argtype) {
-        MethodNode method = new MethodNode(Opcodes.ASM5,
-                                           Opcodes.ACC_STATIC | Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name,
-                                           "()" + rettype.getDescriptor(), null, null);
+        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_STATIC | Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()"
+                + rettype.getDescriptor(), null, null);
 
         populateSelfForwardingMethod(method, forwardname, rettype, argtype);
 
@@ -122,8 +120,7 @@ public class ASMHelper {
      * @param rettype Return type of method
      */
     public static void generateForwardingToStaticMethod(ClassNode clazz, String name, String forwardname, Type rettype, Type fowardtype) {
-        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name,
-                                           "()" + rettype.getDescriptor(), null, null);
+        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
 
         populateForwardingToStaticMethod(method, forwardname, rettype, Type.getObjectType(clazz.name), fowardtype);
 
@@ -140,11 +137,8 @@ public class ASMHelper {
      * @param rettype Return type of method
      * @param thistype Type to treat 'this' as for overload searching purposes
      */
-    public static void generateForwardingToStaticMethod(ClassNode clazz, String name, String forwardname, Type rettype, Type fowardtype,
-                                                        Type thistype) {
-        MethodNode
-                method =
-                new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
+    public static void generateForwardingToStaticMethod(ClassNode clazz, String name, String forwardname, Type rettype, Type fowardtype, Type thistype) {
+        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
 
         populateForwardingToStaticMethod(method, forwardname, rettype, thistype, fowardtype);
 
@@ -179,9 +173,7 @@ public class ASMHelper {
      * @param argtype Type of object to call method on
      */
     public static void generateForwardingMethod(ClassNode clazz, String name, String forwardname, Type rettype, Type argtype) {
-        MethodNode
-                method =
-                new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
+        MethodNode method = new MethodNode(Opcodes.ASM5, Opcodes.ACC_PUBLIC | Opcodes.ACC_SYNTHETIC, name, "()" + rettype.getDescriptor(), null, null);
 
         populateForwardingMethod(method, forwardname, rettype, argtype, Type.getObjectType(clazz.name));
 
@@ -218,7 +210,7 @@ public class ASMHelper {
 
         code.add(new VarInsnNode(thistype.getOpcode(Opcodes.ILOAD), 0));
         code.add(new MethodInsnNode(Opcodes.INVOKESTATIC, forwardtype.getInternalName(), forwardname, Type.getMethodDescriptor(rettype, thistype),
-                                    false));
+                false));
         code.add(new InsnNode(rettype.getOpcode(Opcodes.IRETURN)));
     }
 
@@ -257,9 +249,10 @@ public class ASMHelper {
         code.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, argtype.getInternalName(), forwardname, "()" + rettype.getDescriptor(), false));
         code.add(new InsnNode(rettype.getOpcode(Opcodes.IRETURN)));
     }
-    
-    private final static int[] intConstants = new int[] {Opcodes.ICONST_0, Opcodes.ICONST_1, Opcodes.ICONST_2, Opcodes.ICONST_3, Opcodes.ICONST_4, Opcodes.ICONST_5};
-    
+
+    private final static int[] intConstants = new int[] { Opcodes.ICONST_0, Opcodes.ICONST_1, Opcodes.ICONST_2, Opcodes.ICONST_3, Opcodes.ICONST_4,
+            Opcodes.ICONST_5 };
+
     /**
      * Gets an instruction that pushes a integer onto the stack.  The instruction uses
      * the smallest push possible (ICONST_*, BIPUSH, SIPUSH or Integer constant).
@@ -279,7 +272,7 @@ public class ASMHelper {
             return new LdcInsnNode(c);
         }
     }
-    
+
     /** 
      * Finds a method given the method descriptor
      * 
